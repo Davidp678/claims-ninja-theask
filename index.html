@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Use of Funds</title>
+  <meta name="viewport" content="width=875, height=300, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 875px;
+      height: 300px;
+      overflow: hidden;
+      background: #0b0f16;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Main wrap */
+    .container {
+      width: 100%;
+      height: 100%;
+      padding: 10px 20px;
+    }
+
+    .section-inner {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    /* Title */
+    .funds-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #F02C3E;
+      margin-bottom: 10px;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%,100% { text-shadow: 0 0 10px rgba(240,44,62,0.6); }
+      50% { text-shadow: 0 0 16px rgba(240,44,62,0.9); }
+    }
+
+    /* Grid scaled for 875 width and 300 height */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      height: calc(100% - 40px);
+    }
+
+    /* Card */
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #F02C3E80;
+      box-shadow: 0 4px 14px -4px #F02C3E44;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 4px;
+    }
+
+    /* Icon box */
+    .icon-wrapper {
+      background: #020617;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      color: #e5e7eb;
+    }
+
+    /* Text */
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .percentage {
+      font-size: 18px;
+      font-weight: 700;
+      color: #F02C3E;
+      margin-top: 2px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #1f2937;
+      border-radius: 9999px;
+      margin-top: 4px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #F02C3E, #F02C3E99);
+      border-radius: 9999px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="section-inner">
+
+    <h3 class="funds-title">Use of funds</h3>
+
+    <div class="grid">
+
+      <!-- TEAM EXPANSION -->
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 1 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Team Expansion</div>
+            <div class="percentage">40%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROWTH MARKETING -->
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Growth Marketing</div>
+            <div class="percentage">30%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECHNOLOGY -->
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Technology</div>
+            <div class="percentage">20%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASH FLOW -->
+      <div class="card">
+        <div class="card-header">
+          <div class="icon-wrapper">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div>
+            <div class="card-title">Cash Flow</div>
+            <div class="percentage">10%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
