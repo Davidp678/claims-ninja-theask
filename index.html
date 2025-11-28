@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Use of Funds</title>
+  <meta name="viewport" content="width=875, height=300, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 875px;
+      height: 300px;
+      overflow: hidden;
+      background: #0b0f16;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #f9fafb;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      padding: 10px 20px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .section-inner {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    /* Title with red glow */
+    .funds-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #F02C3E;
+      margin-bottom: 8px;
+      animation: glowRed 2s ease-in-out infinite;
+    }
+
+    @keyframes glowRed {
+      0%, 100% {
+        text-shadow: 0 0 8px rgba(240, 44, 62, 0.4);
+      }
+      50% {
+        text-shadow: 0 0 14px rgba(240, 44, 62, 0.9);
+      }
+    }
+
+    /* 2x2 grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      height: calc(100% - 32px);
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #F02C3E80;
+      box-shadow: 0 6px 18px -6px #F02C3E55;
+    }
+
+    .card-header {
+      padding: 8px 10px;
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+
+    .card-header:hover {
+      background: #020617;
+    }
+
+    .card-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #F02C3E;
+      color: #f9fafb;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-weight: 600;
+      opacity: 0;
+      transform: scale(0.75);
+      transition: all 0.25s ease;
+    }
+
+    .card:hover .badge {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .icon-wrapper {
+      padding: 6px;
+      border-radius: 6px;
+      background: #020617;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .card:hover .icon-wrapper {
+      background: #F02C3E22;
+      transform: scale(1.05);
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      color: #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover .icon {
+      color: #F02C3E;
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    .card-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f9fafb;
+      margin-bottom: 2px;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .percentage {
+      font-size: 18px;
+      font-weight: 700;
+      color: #F02C3E;
+      margin-bottom: 2px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover .percentage {
+      transform: translateY(-1px);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #1f2937;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(to right, #F02C3E, #F02C3E99);
+      border-radius: 9999px;
+      transition: width 0.6s ease-out;
+    }
+
+    .card:hover .progress-fill {
+      width: var(--progress-width);
+    }
+
+    .chevron {
+      width: 14px;
+      height: 14px;
+      margin-left: 6px;
+      flex-shrink: 0;
+      color: #e5e7eb;
+      transition: transform 0.3s ease;
+    }
+
+    .card.expanded .chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown body */
+    .card-body {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 10px;
+      transition: max-height 0.25s ease-out, padding-bottom 0.25s ease-out;
+    }
+
+    .card.expanded .card-body {
+      max-height: 90px;      /* small but enough to show bullets */
+      padding-bottom: 8px;
+    }
+
+    .details-list {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .details-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      margin-bottom: 3px;
+      font-size: 11px;
+      color: #d1d5db;
+      opacity: 0;
+      transform: translateY(4px);
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+
+    .card.expanded .details-list li:nth-child(1) { animation-delay: 0s; }
+    .card.expanded .details-list li:nth-child(2) { animation-delay: 0.06s; }
+    .card.expanded .details-list li:nth-child(3) { animation-delay: 0.12s; }
+    .card.expanded .details-list li:nth-child(4) { animation-delay: 0.18s; }
+
+    .bullet {
+      color: #F02C3E;
+      margin-top: 1px;
+      font-size: 10px;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="section-inner">
+      <h3 class="funds-title">Use of funds</h3>
+
+      <div class="grid">
+        <!-- Team Expansion Card -->
+        <div class="card" data-percentage="40">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="badge">Use of Funds</div>
+            <div class="card-content">
+              <div class="icon-wrapper">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="card-text">
+                <div class="top-row">
+                  <div class="card-title">Team Expansion</div>
+                  <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="percentage">40%</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="--progress-width:40%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="details-list">
+              <li><span class="bullet">•</span><span>Hire additional claims managers to handle increased volume</span></li>
+              <li><span class="bullet">•</span><span>Onboard sales and customer service professionals</span></li>
+              <li><span class="bullet">•</span><span>Convert commission-only roles to salaried positions to drive consistency and retention</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Growth Marketing Card -->
+        <div class="card" data-percentage="30">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="badge">Use of Funds</div>
+            <div class="card-content">
+              <div class="icon-wrapper">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              </div>
+              <div class="card-text">
+                <div class="top-row">
+                  <div class="card-title">Growth Marketing</div>
+                  <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="percentage">30%</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="--progress-width:30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="details-list">
+              <li><span class="bullet">•</span><span>Aggressive paid ad campaigns and SEO investment</span></li>
+              <li><span class="bullet">•</span><span>Industry event presence and industry partnerships</span></li>
+              <li><span class="bullet">•</span><span>Expand outreach, content, and partnerships to grow the client base</span></li>
+              <li><span class="bullet">•</span><span>20x in 2026</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Technology Card -->
+        <div class="card" data-percentage="20">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="badge">Use of Funds</div>
+            <div class="card-content">
+              <div class="icon-wrapper">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div class="card-text">
+                <div class="top-row">
+                  <div class="card-title">Technology</div>
+                  <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="percentage">20%</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="--progress-width:20%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="details-list">
+              <li><span class="bullet">•</span><span>Enhance platform capabilities for faster claims, client visibility, and data analytics</span></li>
+              <li><span class="bullet">•</span><span>Increase API connections to further expand capabilities of the platform</span></li>
+              <li><span class="bullet">•</span><span>Hire full stack dev team to rework website and connect direct with platform</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Cash Flow Card -->
+        <div class="card" data-percentage="10">
+          <div class="card-header" onclick="toggleCard(this)">
+            <div class="badge">Use of Funds</div>
+            <div class="card-content">
+              <div class="icon-wrapper">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="card-text">
+                <div class="top-row">
+                  <div class="card-title">Cash Flow</div>
+                  <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+                <div class="percentage">10%</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="--progress-width:10%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="details-list">
+              <li><span class="bullet">•</span><span>Ensures smooth operations during rapid scaling</span></li>
+              <li><span class="bullet">•</span><span>Buffers timing gaps between expenses and revenue</span></li>
+              <li><span class="bullet">•</span><span>Ensures consistent payroll, onboarding, and delivery rhythms</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleCard(header) {
+      const card = header.parentElement;
+      const wasExpanded = card.classList.contains('expanded');
+
+      // close all
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+
+      // reopen if it wasn't already
+      if (!wasExpanded) {
+        card.classList.add('expanded');
+      }
+    }
+  </script>
+</body>
+</html>
